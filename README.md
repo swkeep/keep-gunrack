@@ -5,7 +5,7 @@ Gun racks are hidden from other non-police players.
 
 # Preview
 
-[Video]()
+[Video](https://youtu.be/7xqfX3gC_po)
 
 # Dependencies
 
