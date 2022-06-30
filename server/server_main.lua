@@ -82,7 +82,8 @@ if Config.gunrack.use_keys_to_unlock_gunrack then
           local tmp = {}
 
           for _, item in ipairs(keys) do
-               if item.info == nil or type(item.info) ~= "table" then
+               if item.info == nil or type(item.info) ~= "table" or
+                   (type(item.info) == 'table' and (item.info['plate'] == nil or item.info['plate'] == '')) then
                     tmp[#tmp + 1] = item
                end
           end
