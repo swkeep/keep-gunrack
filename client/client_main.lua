@@ -175,7 +175,7 @@ AddEventHandler("keep-gunrack:client:open_gunrack_menu", function()
 
      if not plate then return end
      if not isVehicleAllowed(veh) then return end
-     TriggerServerEvent('keep-gunrack:server:open_gunrack_by_menu', plate)
+     TriggerServerEvent('keep-gunrack:server:open_gunrack', plate)
 end)
 
 AddEventHandler('onResourceStart', function(resourceName)
@@ -214,3 +214,39 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
           Menu:destroy()
      end
 end)
+
+
+if Config.gunrack.use_keys_to_unlock_gunrack then
+     local duration = Config.gunrack.cutting_duration * 1000
+     RegisterNetEvent('keep-gunrack:client:cut_key', function()
+          local inputData = exports['qb-input']:ShowInput({
+               header = 'Key Cutting Input',
+               inputs = {
+                    {
+                         type = 'text',
+                         isRequired = true,
+                         name = 'PLATE',
+                         text = 'Enter vehicle plate'
+                    },
+               }
+          })
+          if inputData then
+               if not inputData.PLATE then return end
+               TriggerServerEvent('keep-gunrack:server:start_cut_key', inputData.PLATE)
+          end
+     end)
+
+     RegisterNetEvent('keep-gunrack:client:keycuttingmachine_animation', function(plate)
+          QBCore.Functions.Progressbar("keep_gunrack_keycuttingmachine", Lang:t('progressbar.cutting_key'),
+               duration, false
+               ,
+               false, {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true
+               }, {}, {}, {}, function()
+               TriggerServerEvent('keep-gunrack:server:cut_key', plate)
+          end)
+     end)
+end

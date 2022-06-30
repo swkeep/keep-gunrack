@@ -10,7 +10,10 @@ local whitelist = {
           -- https://docs.fivem.net/natives/?_0x29439776AAA00A62
           18 -- emergency
      },
-     jobs = { 'police' }
+     jobs = { 'police' },
+     key_cutting_citizenid = {
+          'RGZ12054'
+     }
 }
 
 Config.gunrack = {
@@ -20,5 +23,9 @@ Config.gunrack = {
      while_open_animation = true, -- while inventory screen is on
      slots = 5,
      size = 50000,
-     whitelist = whitelist
+     whitelist = whitelist,
+     disable_job_check = false, -- make sure it's fakse if your not using keys or everybody can unlock gunracks
+     -- optional make sure you did optional part of installation
+     use_keys_to_unlock_gunrack = false,
+     cutting_duration = 3,
 }

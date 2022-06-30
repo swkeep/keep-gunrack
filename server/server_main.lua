@@ -23,6 +23,21 @@ local function isAlreadyInstalled(plate)
      if result == 1 then return true else return false end
 end
 
+local function does_player_have_keys(Player, plate)
+     local keys = Player.Functions.GetItemsByName('gunrackkey')
+     if next(keys) == nil then return false end
+
+
+     for _, item in ipairs(keys) do
+          if item.info ~= nil or type(item.info) == "table" then
+               if item.info.plate == plate then
+                    return true
+               end
+          end
+     end
+     return false
+end
+
 -- callbacks
 
 QBCore.Functions.CreateUseableItem('policegunrack', function(source, item)
@@ -34,6 +49,105 @@ QBCore.Functions.CreateUseableItem('policegunrack', function(source, item)
      end
      TriggerClientEvent('keep-gunrack:client:start_installing_gunrack', source)
 end)
+
+
+if Config.gunrack.use_keys_to_unlock_gunrack then
+     QBCore.Functions.CreateUseableItem('gunrackkey', function(source, item)
+
+     end)
+
+     local function IsPlayerWhitelisted(citizenid)
+          for _, id in ipairs(Config.gunrack.whitelist.key_cutting_citizenid) do
+               if citizenid == id then
+                    return true
+               end
+          end
+          return false
+     end
+
+     QBCore.Functions.CreateUseableItem('keycuttingmachine', function(source, item)
+          local src = source
+          local Player = QBCore.Functions.GetPlayer(src)
+          if not Player then return end
+          if not IsPlayerWhitelisted(Player.PlayerData.citizenid) then
+               TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_authorized'), "error")
+               return
+          end
+          TriggerClientEvent('keep-gunrack:client:cut_key', source)
+     end)
+
+     local function find_unused_keys(Player)
+          local keys = Player.Functions.GetItemsByName('gunrackkey')
+          if next(keys) == nil then return {} end
+          local tmp = {}
+
+          for _, item in ipairs(keys) do
+               if item.info == nil or type(item.info) ~= "table" then
+                    tmp[#tmp + 1] = item
+               end
+          end
+
+          return tmp
+     end
+
+     local function get_one_unused_key(Player)
+          local keys = find_unused_keys(Player)
+          if next(keys) == nil then return end
+
+          for _, key in ipairs(keys) do
+               return key
+          end
+     end
+
+     local function save_key_info(Player, item, plate)
+          if Player.PlayerData.items[item.slot] then
+               if not (type(Player.PlayerData.items[item.slot].info) == "table") then
+                    Player.PlayerData.items[item.slot].info = {}
+                    Player.PlayerData.items[item.slot].info.plate = plate
+               else
+                    Player.PlayerData.items[item.slot].info.plate = plate
+               end
+          end
+          Player.Functions.SetInventory(Player.PlayerData.items, true)
+     end
+
+     RegisterNetEvent('keep-gunrack:server:start_cut_key', function(plate)
+          local src = source
+          local Player = QBCore.Functions.GetPlayer(src)
+
+          if not IsPlayerWhitelisted(Player.PlayerData.citizenid) then
+               TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_authorized'), "error")
+               return
+          end
+
+          local key = Player.Functions.GetItemByName('gunrackkey')
+          if not key then
+               TriggerClientEvent('QBCore:Notify', src, Lang:t('error.no_key_found'), "error")
+               return
+          end
+
+          TriggerClientEvent('keep-gunrack:client:keycuttingmachine_animation', src, plate)
+     end)
+
+     --
+     RegisterNetEvent('keep-gunrack:server:cut_key', function(plate)
+          local src = source
+          local Player = QBCore.Functions.GetPlayer(src)
+
+          if not IsPlayerWhitelisted(Player.PlayerData.citizenid) then
+               TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_authorized'), "error")
+               return
+          end
+
+          local key = get_one_unused_key(Player)
+          if key == nil then
+               TriggerClientEvent('QBCore:Notify', src, Lang:t('error.no_unused_keys_found'), "error")
+               return
+          end
+          save_key_info(Player, key, plate)
+          TriggerClientEvent('QBCore:Notify', src, Lang:t('success.successful_cutting'), "success")
+     end)
+end
 
 -- events
 
@@ -60,7 +174,7 @@ RegisterNetEvent('keep-gunrack:server:create_gunrack', function(plate)
      TriggerClientEvent('keep-gunrack:client:open_gunrack', src, plate)
 end)
 
-RegisterNetEvent('keep-gunrack:server:open_gunrack_by_menu', function(plate)
+RegisterNetEvent('keep-gunrack:server:open_gunrack', function(plate)
      local src = source
      local Player = QBCore.Functions.GetPlayer(src)
      if not Player then return end
@@ -70,7 +184,15 @@ RegisterNetEvent('keep-gunrack:server:open_gunrack_by_menu', function(plate)
      end
 
      if isAlreadyInstalled(plate) then
-          TriggerClientEvent('keep-gunrack:client:open_gunrack', src, plate)
+          if Config.gunrack.use_keys_to_unlock_gunrack then
+               if does_player_have_keys(Player, plate) then
+                    TriggerClientEvent('keep-gunrack:client:open_gunrack', src, plate)
+               else
+                    TriggerClientEvent('QBCore:Notify', src, Lang:t('error.dont_have_gunrack_keys'), "error")
+               end
+          else
+               TriggerClientEvent('keep-gunrack:client:open_gunrack', src, plate)
+          end
           return
      else
           TriggerClientEvent('QBCore:Notify', src, Lang:t('error.dont_have_a_gunrack'), "error")

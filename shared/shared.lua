@@ -80,6 +80,7 @@ function print_table(node)
 end
 
 function IsJobAllowed(name)
+     if Config.gunrack.disable_job_check then return true end
      for _, w_job in ipairs(Config.gunrack.whitelist.jobs) do
           if name == w_job then
                return true
