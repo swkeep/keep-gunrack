@@ -68,6 +68,21 @@ Gun racks are hidden from other non-police players.
 },
 ```
 
+- step2(optional tooltip): to add keys to inventory
+  ![demo](https://raw.githubusercontent.com/swkeep/keep-gunrack/main/.github/images/policekeys_qb_inventory_demo.jpg)
+
+- open qb-inventory\js\app.js and find FormatItemInfo()
+- add it right before ending else
+
+![how it might look like in this step](https://raw.githubusercontent.com/swkeep/keep-gunrack/main/.github/images/inventory.PNG)
+
+```lua
+else if (itemData.name == "gunrackkey") {
+     $(".item-info-title").html("<p>" + itemData.label + "</p>");
+     $(".item-info-description").html("<p>Cutted Key<p/><p>Plate: " + itemData.info.plate + "</p>");
+}
+```
+
 - last step: ensure script after all dependencies `ensure keep-gunrack` (server.cfg)
 - if you did install keys make sure you have right config setup example:
 
