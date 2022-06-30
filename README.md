@@ -10,7 +10,6 @@ Gun racks are hidden from other non-police players.
 # Dependencies
 
 - qb-core
-- qb-target
 - progressbar
 - qb-radialmenu
 
