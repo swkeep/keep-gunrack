@@ -28,7 +28,7 @@ end
 QBCore.Functions.CreateUseableItem('policegunrack', function(source, item)
      local Player = QBCore.Functions.GetPlayer(source)
      if not Player then return end
-     if not Player.PlayerData.job.name == 'police' then
+     if not IsJobAllowed(Player.PlayerData.job.name) then
           TriggerClientEvent('QBCore:Notify', source, Lang:t('error.not_authorized'), "error")
           return
      end
@@ -41,7 +41,7 @@ RegisterNetEvent('keep-gunrack:server:create_gunrack', function(plate)
      local src = source
      local Player = QBCore.Functions.GetPlayer(src)
 
-     if not Player.PlayerData.job.name == 'police' then
+     if not IsJobAllowed(Player.PlayerData.job.name) then
           TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_authorized'), "error")
           return
      end
@@ -64,7 +64,7 @@ RegisterNetEvent('keep-gunrack:server:open_gunrack_by_menu', function(plate)
      local src = source
      local Player = QBCore.Functions.GetPlayer(src)
      if not Player then return end
-     if not Player.PlayerData.job.name == 'police' then
+     if not IsJobAllowed(Player.PlayerData.job.name) then
           TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_authorized'), "error")
           return
      end

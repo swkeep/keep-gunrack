@@ -9,7 +9,8 @@ local whitelist = {
      classes = {
           -- https://docs.fivem.net/natives/?_0x29439776AAA00A62
           18 -- emergency
-     }
+     },
+     jobs = { 'police' }
 }
 
 Config.gunrack = {

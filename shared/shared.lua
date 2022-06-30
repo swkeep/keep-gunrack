@@ -78,3 +78,12 @@ function print_table(node)
 
      print(output_str)
 end
+
+function IsJobAllowed(name)
+     for _, w_job in ipairs(Config.gunrack.whitelist.jobs) do
+          if name == w_job then
+               return true
+          end
+     end
+     return false
+end

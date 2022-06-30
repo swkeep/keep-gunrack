@@ -183,7 +183,7 @@ AddEventHandler('onResourceStart', function(resourceName)
 
      QBCore.Functions.GetPlayerData(function(PlayerData)
           PlayerJob = PlayerData.job
-          if PlayerJob.name == 'police' then
+          if IsJobAllowed(PlayerJob.name) then
                onDuty = PlayerData.job.onduty
                Menu:create()
           end
@@ -198,7 +198,7 @@ end)
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
      QBCore.Functions.GetPlayerData(function(PlayerData)
           PlayerJob = PlayerData.job
-          if PlayerJob.name == 'police' then
+          if IsJobAllowed(PlayerJob.name) then
                onDuty = PlayerData.job.onduty
                Menu:create()
           end
@@ -207,7 +207,7 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
      PlayerJob = JobInfo
-     if PlayerJob.name == 'police' then
+     if IsJobAllowed(PlayerJob.name) then
           onDuty = PlayerJob.onduty
           Menu:create()
      else

@@ -22,9 +22,10 @@ end
 
 RegisterKeyMapping('+openGunRack', 'open gun rack', 'keyboard', Config.gunrack.keybind)
 RegisterCommand('+openGunRack', function()
-     if not IsPauseMenuActive() and PlayerJob.name == 'police' then
+     local allowed = IsJobAllowed(PlayerJob.name)
+     if not IsPauseMenuActive() and allowed then
           TriggerEvent('keep-gunrack:client:open_gunrack_menu')
-     elseif not IsPauseMenuActive() and not (PlayerJob.name == 'police') then
+     elseif not IsPauseMenuActive() and not (allowed) then
           TriggerEvent('QBCore:Notify', Lang:t('error.not_authorized'), "error")
      end
 end, false)
