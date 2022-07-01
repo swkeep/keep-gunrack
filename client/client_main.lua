@@ -25,7 +25,6 @@ local function isVehicleAllowed(veh)
      for _, w_class in ipairs(Config.gunrack.whitelist.classes) do
           if w_class == class then return true end
      end
-     QBCore.Functions.Notify(Lang:t('error.vehicle_is_not_allowed'), "error")
      return false
 end
 
@@ -88,7 +87,24 @@ local function get_vehicle()
           veh, distance = get_closest_vehicle()
      end
 
-     local class = GetVehicleClass(veh)
+     if isVehicleAllowed(veh) then
+          return veh, distance
+     else
+          QBCore.Functions.Notify(Lang:t('error.vehicle_is_not_allowed'), "error")
+          return nil, nil
+     end
+end
+
+local function get_vehicle_menu()
+     local player_ped = PlayerPedId()
+     local veh = nil
+     local distance = 0
+
+     if not IsPedInAnyVehicle(player_ped, false) then
+          return
+     end
+
+     veh = get_vehicle_player_is_in()
      if isVehicleAllowed(veh) then
           return veh, distance
      else
@@ -174,7 +190,11 @@ AddEventHandler("keep-gunrack:client:open_gunrack_menu", function()
      local plate = GetVehicleNumberPlateText(veh)
 
      if not plate then return end
-     if not isVehicleAllowed(veh) then return end
+
+     if not isVehicleAllowed(veh) then
+          QBCore.Functions.Notify(Lang:t('error.vehicle_is_not_allowed'), "error")
+          return
+     end
      TriggerServerEvent('keep-gunrack:server:open_gunrack', plate)
 end)
 
@@ -185,7 +205,6 @@ AddEventHandler('onResourceStart', function(resourceName)
           PlayerJob = PlayerData.job
           if IsJobAllowed(PlayerJob.name) then
                onDuty = PlayerData.job.onduty
-               Menu:create()
           end
      end)
 end)
@@ -200,7 +219,6 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
           PlayerJob = PlayerData.job
           if IsJobAllowed(PlayerJob.name) then
                onDuty = PlayerData.job.onduty
-               Menu:create()
           end
      end)
 end)
@@ -209,9 +227,6 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(JobInfo)
      PlayerJob = JobInfo
      if IsJobAllowed(PlayerJob.name) then
           onDuty = PlayerJob.onduty
-          Menu:create()
-     else
-          Menu:destroy()
      end
 end)
 
@@ -250,3 +265,18 @@ if Config.gunrack.use_keys_to_unlock_gunrack then
           end)
      end)
 end
+
+CreateThread(function()
+     repeat Wait(500) until PlayerJob ~= nil
+     while true do
+          local veh = get_vehicle_menu()
+          if veh then
+               if IsJobAllowed(PlayerJob.name) then
+                    Menu:create()
+               end
+          else
+               Menu:destroy()
+          end
+          Wait(500)
+     end
+end)
