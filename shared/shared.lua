@@ -7,7 +7,7 @@ function print_table(node)
 
      while true do
           local size = 0
-          for k, v in pairs(node) do
+          for _ in pairs(node) do
                size = size + 1
           end
 
