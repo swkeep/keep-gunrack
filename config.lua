@@ -3,8 +3,7 @@ Config = Config or {}
 local whitelist = {
      models = {
           -- if a vehicle model exist in models script will skip class check!
-          -- 'fiat600',
-          'sjcop1'
+          'vehiclespawnname' -- Example: sjcop1 | Example: fiat600 | Example: rmodsupralb
      },
      classes = {
           -- https://docs.fivem.net/natives/?_0x29439776AAA00A62

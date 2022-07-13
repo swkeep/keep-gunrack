@@ -40,7 +40,7 @@ end
 
 -- callbacks
 
-QBCore.Functions.CreateUseableItem('policegunrack', function(source, item)
+QBCore.Functions.CreateUseableItem('policegunrack', function(source)
      local Player = QBCore.Functions.GetPlayer(source)
      if not Player then return end
      if not IsJobAllowed(Player.PlayerData.job.name) then
@@ -52,9 +52,6 @@ end)
 
 
 if Config.gunrack.use_keys_to_unlock_gunrack then
-     QBCore.Functions.CreateUseableItem('gunrackkey', function(source, item)
-
-     end)
 
      local function IsPlayerWhitelisted(citizenid)
           for _, id in ipairs(Config.gunrack.whitelist.key_cutting_citizenid) do
@@ -65,7 +62,7 @@ if Config.gunrack.use_keys_to_unlock_gunrack then
           return false
      end
 
-     QBCore.Functions.CreateUseableItem('keycuttingmachine', function(source, item)
+     QBCore.Functions.CreateUseableItem('keycuttingmachine', function(source)
           local src = source
           local Player = QBCore.Functions.GetPlayer(src)
           if not Player then return end

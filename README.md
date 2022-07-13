@@ -29,43 +29,43 @@ Gun racks are hidden from other non-police players.
 - step1: Add Below code to `qb-core/shared/items.lua`
 
 ```lua
-["policegunrack"] = {
-     ["name"] = "policegunrack",
-     ["label"] = "Police Gun Rack",
-     ["weight"] = 15000,
-     ["type"] = "item",
-     ["image"] = "policegunrack.png",
-     ["unique"] = false,
-     ["useable"] = true,
-     ["shouldClose"] = true,
-     ["combinable"] = nil,
-     ["description"] = "Gun rack for police vehicles"
-},
--- optional if you want to open rack by keys
-["gunrackkey"] = {
-     ["name"] = "gunrackkey",
-     ["label"] = "Police Gun Key",
-     ["weight"] = 500,
-     ["type"] = "item",
-     ["image"] = "gunrackkey.png",
-     ["unique"] = false,
-     ["useable"] = true,
-     ["shouldClose"] = true,
-     ["combinable"] = nil,
-     ["description"] = "A key to open gun rack"
-},
-["keycuttingmachine"] = {
-     ["name"] = "keycuttingmachine",
-     ["label"] = "Key Cutting Machine",
-     ["weight"] = 40000,
-     ["type"] = "item",
-     ["image"] = "keycuttingmachine.png",
-     ["unique"] = false,
-     ["useable"] = true,
-     ["shouldClose"] = true,
-     ["combinable"] = nil,
-     ["description"] = "A Machine to Cut Keys"
-},
+     ["policegunrack"] = {
+          ["name"] = "policegunrack",
+          ["label"] = "Police Gun Rack",
+          ["weight"] = 15000,
+          ["type"] = "item",
+          ["image"] = "policegunrack.png",
+          ["unique"] = false,
+          ["useable"] = true,
+          ["shouldClose"] = true,
+          ["combinable"] = nil,
+          ["description"] = "Gun rack for police vehicles"
+     },
+     -- optional if you want to open rack by keys
+     ["gunrackkey"] = {
+          ["name"] = "gunrackkey",
+          ["label"] = "Police Gun Key",
+          ["weight"] = 500,
+          ["type"] = "item",
+          ["image"] = "gunrackkey.png",
+          ["unique"] = false,
+          ["useable"] = true,
+          ["shouldClose"] = true,
+          ["combinable"] = nil,
+          ["description"] = "A key to open gun rack"
+     },
+     ["keycuttingmachine"] = {
+          ["name"] = "keycuttingmachine",
+          ["label"] = "Key Cutting Machine",
+          ["weight"] = 40000,
+          ["type"] = "item",
+          ["image"] = "keycuttingmachine.png",
+          ["unique"] = false,
+          ["useable"] = true,
+          ["shouldClose"] = true,
+          ["combinable"] = nil,
+          ["description"] = "A Machine to Cut Keys"
+     },
 ```
 
 - step2(optional tooltip): to add keys to inventory
@@ -81,6 +81,14 @@ else if (itemData.name == "gunrackkey") {
      $(".item-info-title").html("<p>" + itemData.label + "</p>");
      $(".item-info-description").html("<p>Cutted Key<p/><p>Plate: " + itemData.info.plate + "</p>");
 }
+```
+
+- if you are using lj-inventory use:
+
+```lua
+} else if (itemData.name == "gunrackkey") {
+     $(".item-info-title").html("<p>" + itemData.label + "</p>");
+     $(".item-info-description").html("<p>Cutted Key<p/><p>Plate: " + itemData.info.plate + "</p>");
 ```
 
 - last step: ensure script after all dependencies `ensure keep-gunrack` (server.cfg)
