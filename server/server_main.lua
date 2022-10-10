@@ -18,7 +18,7 @@ local function remove_item(src, Player, name, amount)
 end
 
 local function isAlreadyInstalled(plate)
-     local stash = 'Gunrack_' .. plate
+     local stash = Config.gunrack.stash_prefix .. plate
      local result = MySQL.Sync.fetchScalar("SELECT EXISTS(SELECT id FROM stashitems WHERE stash= ?)", { stash })
      if result == 1 then return true else return false end
 end

@@ -28,4 +28,5 @@ Config.gunrack = {
      -- optional make sure you did optional part of installation
      use_keys_to_unlock_gunrack = false,
      cutting_duration = 3,
+     stash_prefix = 'Gunrack_'
 }

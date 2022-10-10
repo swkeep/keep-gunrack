@@ -140,8 +140,8 @@ local function open_stash(plate)
           TriggerEvent('animations:client:EmoteCommandStart', { "mechanic4" })
      end
      local settings = { maxweight = Config.gunrack.size, slots = Config.gunrack.slots }
-     TriggerServerEvent("inventory:server:OpenInventory", "stash", "Gunrack_" .. plate, settings)
-     TriggerEvent("inventory:client:SetCurrentStash", "Gunrack_" .. plate)
+     TriggerServerEvent("inventory:server:OpenInventory", "stash", Config.gunrack.stash_prefix .. plate, settings)
+     TriggerEvent("inventory:client:SetCurrentStash", Config.gunrack.stash_prefix .. plate)
 
      if Config.gunrack.while_open_animation then
           Wait(3500)
