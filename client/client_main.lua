@@ -156,10 +156,9 @@ end
 
 RegisterNetEvent('keep-gunrack:client:start_installing_gunrack', function()
      -- technically we won't need to check for item but just in case
-     QBCore.Functions.TriggerCallback("QBCore:HasItem", function(hasitem)
-          if not hasitem then return end
-          installing_gunrack()
-     end, 'policegunrack')
+     local HasItem = QBCore.Functions.HasItem('policegunrack')
+     if not HasItem then return end
+     installing_gunrack()
 end)
 
 RegisterNetEvent("keep-gunrack:client:open_gunrack", function(plate)

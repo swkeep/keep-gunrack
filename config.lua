@@ -4,7 +4,7 @@ local whitelist = {
      models = {
           -- if a vehicle model exist in models script will skip class check!
           -- 'fiat600',
-          'sjcop1'
+          'adder'
      },
      classes = {
           -- https://docs.fivem.net/natives/?_0x29439776AAA00A62
@@ -12,7 +12,7 @@ local whitelist = {
      },
      jobs = { 'police' },
      key_cutting_citizenid = {
-          'RGZ12054'
+          'IFD87837'
      }
 }
 

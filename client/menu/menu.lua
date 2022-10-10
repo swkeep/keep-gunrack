@@ -29,3 +29,12 @@ RegisterCommand('+openGunRack', function()
           TriggerEvent('QBCore:Notify', Lang:t('error.not_authorized'), "error")
      end
 end, false)
+
+RegisterNetEvent('keep-gunrack:menu:open_rack_by_key', function()
+     local allowed = IsJobAllowed(PlayerJob.name)
+     if not IsPauseMenuActive() and allowed then
+          TriggerEvent('keep-gunrack:client:open_gunrack_menu')
+     elseif not IsPauseMenuActive() and not (allowed) then
+          TriggerEvent('QBCore:Notify', Lang:t('error.not_authorized'), "error")
+     end
+end)

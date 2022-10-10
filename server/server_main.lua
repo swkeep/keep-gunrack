@@ -53,7 +53,7 @@ end)
 
 if Config.gunrack.use_keys_to_unlock_gunrack then
      QBCore.Functions.CreateUseableItem('gunrackkey', function(source, item)
-
+          TriggerClientEvent('keep-gunrack:menu:open_rack_by_key', source)
      end)
 
      local function IsPlayerWhitelisted(citizenid)
