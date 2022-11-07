@@ -2,6 +2,7 @@ fx_version 'cerulean'
 games { 'gta5' }
 
 author "Swkeep#7049"
+version '1.0.3'
 
 shared_scripts {
      '@qb-core/shared/locale.lua',

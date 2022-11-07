@@ -155,9 +155,6 @@ end
 -- events
 
 RegisterNetEvent('keep-gunrack:client:start_installing_gunrack', function()
-     -- technically we won't need to check for item but just in case
-     local HasItem = QBCore.Functions.HasItem('policegunrack')
-     if not HasItem then return end
      installing_gunrack()
 end)
 

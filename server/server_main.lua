@@ -40,6 +40,15 @@ end
 
 -- callbacks
 
+local function HasItem(source, Player, item_name)
+     local item = Player.Functions.GetItemByName(item_name)
+     if item then
+          TriggerClientEvent('QBCore:Notify', source, "You don't have a Gun Rack?!", 'error')
+          return true
+     end
+     return false
+end
+
 QBCore.Functions.CreateUseableItem('policegunrack', function(source, item)
      local Player = QBCore.Functions.GetPlayer(source)
      if not Player then return end
@@ -47,6 +56,7 @@ QBCore.Functions.CreateUseableItem('policegunrack', function(source, item)
           TriggerClientEvent('QBCore:Notify', source, Lang:t('error.not_authorized'), "error")
           return
      end
+
      TriggerClientEvent('keep-gunrack:client:start_installing_gunrack', source)
 end)
 
@@ -165,6 +175,9 @@ RegisterNetEvent('keep-gunrack:server:create_gunrack', function(plate)
           TriggerClientEvent('QBCore:Notify', src, Lang:t('error.already_installed'), "error")
           return
      end
+
+     local _HasItem = HasItem(src, Player, 'policegunrack')
+     if not _HasItem then return end
 
      if not remove_item(src, Player, 'policegunrack', 1) then
           TriggerClientEvent('QBCore:Notify', src, Lang:t('error.failed_to_use_gunrack'), "error")
