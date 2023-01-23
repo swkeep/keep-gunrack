@@ -162,6 +162,26 @@ end
 
 -- events
 
+local function AddInitialItems(plate)
+     local query = 'INSERT INTO stashitems (stash, items) VALUES (:stash, :items)'
+     local items = {}
+
+     for key, item in pairs(Config.InitialItems) do
+          if QBCore.Shared.Items[item.name] then
+               local i = #items + 1
+               items[i] = QBCore.Shared.Items[item.name]
+               items[i]['amount'] = item.amount
+               items[i]['description'] = nil
+               items[i]['slot'] = i
+          end
+     end
+
+     MySQL.Sync.insert(query, {
+          ['stash'] = Config.gunrack.stash_prefix .. plate,
+          ['items'] = json.encode(items),
+     })
+end
+
 RegisterNetEvent('keep-gunrack:server:create_gunrack', function(plate)
      local src = source
      local Player = QBCore.Functions.GetPlayer(src)
@@ -182,6 +202,10 @@ RegisterNetEvent('keep-gunrack:server:create_gunrack', function(plate)
      if not remove_item(src, Player, 'policegunrack', 1) then
           TriggerClientEvent('QBCore:Notify', src, Lang:t('error.failed_to_use_gunrack'), "error")
           return
+     end
+
+     if Config.gunrack.add_initial_items then
+          AddInitialItems(plate)
      end
 
      TriggerClientEvent('QBCore:Notify', src, Lang:t('success.successful_installation'), "success")

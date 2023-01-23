@@ -16,10 +16,23 @@ local whitelist = {
      }
 }
 
+-- items added only after gun rack installation
+Config.InitialItems = {
+     {
+          name = 'joint',
+          amount = 10
+     },
+     {
+          name = 'empty_weed_bag',
+          amount = 5
+     },
+}
+
 Config.gunrack = {
      keybind = 'j',
      install_duration = 3, --sec
      opening_duration = 3, --sec
+     add_initial_items = true,
      while_open_animation = true, -- while inventory screen is on
      slots = 5,
      size = 50000,
